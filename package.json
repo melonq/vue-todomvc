@@ -9,6 +9,8 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "todomvc-app-css": "^2.1.0",
+    "todomvc-common": "^1.0.3",
     "vue": "^2.2.1"
   },
   "devDependencies": {
