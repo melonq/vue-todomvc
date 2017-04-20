@@ -3,7 +3,7 @@
       <section class="todoapp">
 			<header class="header">
 				<h1>todos</h1>
-				<input class="new-todo" placeholder="What needs to be done?" autofocus>
+				<input class="new-todo" placeholder="What needs to be done?" autofocus v-on:keyup.enter="addNewTodo">
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section class="main" v-if="hasTodos">
@@ -12,6 +12,14 @@
 				<ul class="todo-list">
 					<!-- These are here just to show the structure of the list items -->
 					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+                    <li v-for="(todo, index) in todos">
+						<div class="view">
+							<input class="toggle" type="checkbox">
+							<label>{{todo}}</label>
+							<button class="destroy"></button>
+						</div>
+						<input class="edit" value="Create a TodoMVC template">
+					</li>
 					<li class="completed">
 						<div class="view">
 							<input class="toggle" type="checkbox" checked>
@@ -72,6 +80,12 @@ export default {
   computed: {
     hasTodos: function() {
       return this.todos.length > 0;
+    }
+  },
+  methods: {
+    addNewTodo: function(e) {
+      this.todos.push(e.target.value.trim());
+      e.target.value = '';
     }
   }
 };
