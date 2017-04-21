@@ -7,8 +7,8 @@
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section class="main" v-if="hasTodos">
-				<input class="toggle-all" type="checkbox">
-				<label for="toggle-all">Mark all as complete</label>
+				<input class="toggle-all" type="checkbox" v-bind:checked="allCompleted">
+				<label for="toggle-all" v-on:click="toggleAllCompletedState">Mark all as complete</label>
 				<ul class="todo-list">
 					<!-- These are here just to show the structure of the list items -->
 					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
@@ -64,6 +64,10 @@ export default {
   computed: {
     hasTodos: function() {
       return this.todos.length > 0;
+    },
+    allCompleted: function() {
+      //   _.every(this.todos, 'completed');
+      return this.todos.find(todo => !todo.completed) == undefined;
     }
   },
   methods: {
@@ -76,6 +80,10 @@ export default {
         this.todos.push(newTodo);
         e.target.value = '';
       }
+    },
+    toggleAllCompletedState: function() {
+      const newState = !this.allCompleted;
+      this.todos.forEach(todo => todo.completed = newState);
     }
   }
 };
