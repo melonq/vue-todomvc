@@ -43,7 +43,7 @@
 					</li>
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->
-				<button class="clear-completed">Clear completed</button>
+				<button class="clear-completed" v-show="hasCompletedTodos" v-on:click="clearCompletedTodos">Clear completed</button>
 			</footer>
 		</section>
 		<footer class="info">
@@ -73,6 +73,9 @@ export default {
     allCompleted: function() {
       //   _.every(this.todos, 'completed');
       return this.todos.find(todo => !todo.completed) == undefined;
+    },
+    hasCompletedTodos: function() {
+      return this.todos.find(todo => todo.completed);
     }
   },
   methods: {
@@ -89,6 +92,9 @@ export default {
     toggleAllCompletedState: function() {
       const newState = !this.allCompleted;
       this.todos.forEach(todo => todo.completed = newState);
+    },
+    clearCompletedTodos: function() {
+      this.todos = this.todos.filter(todo => !todo.completed);
     },
     startEditing: function(todo) {
       this.editingTodo = todo;
