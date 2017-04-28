@@ -22,6 +22,7 @@
                             v-on:blur="submitEditing(todo, index)"
                             v-on:keyup.enter="submitEditing(todo, index)"
                             v-on:keyup.esc="cancelEditing(todo)"
+                            v-autofocus="todo === editingTodo"
                         >
 					</li>
 				</ul>
@@ -119,6 +120,11 @@ export default {
   filters: {
     pluralise: function(value, count) {
       return count === 1 ? value : `${value}s`;
+    }
+  },
+  directives: {
+    autofocus: function(el, binding) {
+      binding.value && el.focus();
     }
   }
 };
