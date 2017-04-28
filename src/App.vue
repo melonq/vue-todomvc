@@ -1,5 +1,5 @@
 <template>
-  <div id="apppp">
+  <div id="app">
       <section class="todoapp">
 			<header class="header">
 				<h1>todos</h1>
@@ -29,7 +29,7 @@
 			<!-- This footer should hidden by default and shown when there are todos -->
 			<footer class="footer" v-if="hasTodos">
 				<!-- This should be `0 items left` by default -->
-				<span class="todo-count"><strong>0</strong> item left</span>
+				<span class="todo-count"><strong>{{ todos.length }}</strong> {{ 'item' | pluralise(todos.length) }} left</span>
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
 					<li>
@@ -108,6 +108,11 @@ export default {
       }
 
       this.exitEditing();
+    }
+  },
+  filters: {
+    pluralise: function(value, count) {
+      return count === 1 ? value : `${value}s`;
     }
   }
 };
