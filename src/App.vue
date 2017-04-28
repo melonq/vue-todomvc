@@ -15,10 +15,14 @@
                     <li v-for="(todo, index) in todos"  v-bind:class="{completed: todo.completed, editing: editingTodo == todo}">
 						<div class="view">
 							<input class="toggle" type="checkbox" v-model="todo.completed">
-							<label v-on:dblclick="editingTodo=todo">{{ todo.title }}</label>
+							<label v-on:dblclick="startEditing(todo)">{{ todo.title }}</label>
 							<button class="destroy"></button>
 						</div>
-						<input class="edit" v-bind:value="todo.title">
+						<input class="edit" v-model.trim="todo.title"
+                            v-on:blur="submitEditing(todo, index)"
+                            v-on:keyup.enter="submitEditing(todo, index)"
+                            v-on:keyup.esc="cancelEditing(todo)"
+                        >
 					</li>
 				</ul>
 			</section>
@@ -85,6 +89,25 @@ export default {
     toggleAllCompletedState: function() {
       const newState = !this.allCompleted;
       this.todos.forEach(todo => todo.completed = newState);
+    },
+    startEditing: function(todo) {
+      this.editingTodo = todo;
+      this.remainingTitle = todo.title;
+    },
+    exitEditing: function(e) {
+      this.editingTodo = null;
+    },
+    cancelEditing: function(todo) {
+      todo.title = this.remainingTitle;
+
+      this.exitEditing();
+    },
+    submitEditing: function(todo, index) {
+      if (todo.title === '') {
+        this.todos.splice(index, 1);
+      }
+
+      this.exitEditing();
     }
   }
 };
