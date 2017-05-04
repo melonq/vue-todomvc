@@ -59,6 +59,7 @@
 </template>
 
 <script>
+const LocalStorageKeyName = 'todos-vuejs';
 export default {
   name: 'app',
   data() {
@@ -66,6 +67,12 @@ export default {
       todos: [],
       editingTodo: null
     };
+  },
+  beforeMount: function() {
+    const storedTodos = JSON.parse(localStorage.getItem(LocalStorageKeyName));
+    if (storedTodos) {
+      this.todos = storedTodos;
+    }
   },
   computed: {
     hasTodos: function() {
@@ -128,6 +135,11 @@ export default {
   directives: {
     autofocus: function(el, binding) {
       binding.value && el.focus();
+    }
+  },
+  watch: {
+    todos: function() {
+      localStorage.setItem(LocalStorageKeyName, JSON.stringify(this.todos));
     }
   }
 };
