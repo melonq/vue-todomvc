@@ -16,11 +16,11 @@
 						<div class="view">
 							<input class="toggle" type="checkbox" v-model="todo.completed">
 							<label v-on:dblclick="startEditing(todo)">{{ todo.title }}</label>
-							<button class="destroy"></button>
+							<button class="destroy" v-on:click="removeTodo(todo)"></button>
 						</div>
 						<input class="edit" v-model.trim="todo.title"
-                            v-on:blur="submitEditing(todo, index)"
-                            v-on:keyup.enter="submitEditing(todo, index)"
+                            v-on:blur="submitEditing(todo)"
+                            v-on:keyup.enter="submitEditing(todo)"
                             v-on:keyup.esc="cancelEditing(todo)"
                             v-autofocus="todo === editingTodo"
                         >
@@ -90,6 +90,9 @@ export default {
         e.target.value = '';
       }
     },
+    removeTodo: function(todo) {
+      this.todos = this.todos.filter(t => t != todo);
+    },
     toggleAllCompletedState: function() {
       const newState = !this.allCompleted;
       this.todos.forEach(todo => todo.completed = newState);
@@ -109,9 +112,9 @@ export default {
 
       this.exitEditing();
     },
-    submitEditing: function(todo, index) {
+    submitEditing: function(todo) {
       if (todo.title === '') {
-        this.todos.splice(index, 1);
+        this.removeTodo(todo);
       }
 
       this.exitEditing();
