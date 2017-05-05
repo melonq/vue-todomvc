@@ -34,13 +34,13 @@
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
 					<li>
-						<router-link class="selected" to="/">All</router-link>
+						<router-link v-bind:class="{selected: currentFilter == undefined}" to="/">All</router-link>
 					</li>
 					<li>
-						<router-link to="/active">Active</router-link>
+						<router-link v-bind:class="{selected: currentFilter == 'active'}" to="/active">Active</router-link>
 					</li>
 					<li>
-						<router-link to="/completed">Completed</router-link>
+						<router-link v-bind:class="{selected: currentFilter == 'completed'}" to="/completed">Completed</router-link>
 					</li>
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->
@@ -65,7 +65,8 @@ export default {
   data() {
     return {
       todos: [],
-      editingTodo: null
+      editingTodo: null,
+      currentFilter: this.$route.params.status
     };
   },
   beforeMount: function() {
@@ -79,14 +80,13 @@ export default {
       return this.todos.length > 0;
     },
     allCompleted: function() {
-      //   _.every(this.todos, 'completed');
-      return this.todos.find(todo => !todo.completed) == undefined;
+      return this.todos.every(todo => todo.completed);
     },
     completedTodos: function() {
       return this.todos.filter(todo => todo.completed);
     },
     visableTodos: function() {
-      switch (this.$route.params.status) {
+      switch (this.currentFilter) {
         case 'active':
           return this.todos.filter(todo => !todo.completed);
         case 'completed':
@@ -153,6 +153,9 @@ export default {
       handler: function() {
         localStorage.setItem(LocalStorageKeyName, JSON.stringify(this.todos));
       }
+    },
+    $route: function() {
+      this.currentFilter = this.$route.params.status;
     }
   }
 };
