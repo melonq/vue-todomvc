@@ -12,7 +12,7 @@
 				<ul class="todo-list">
 					<!-- These are here just to show the structure of the list items -->
 					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-                    <li v-for="(todo, index) in todos"  v-bind:class="{completed: todo.completed, editing: editingTodo == todo}">
+                    <li v-for="(todo, index) in visableTodos"  v-bind:class="{completed: todo.completed, editing: editingTodo == todo}">
 						<div class="view">
 							<input class="toggle" type="checkbox" v-model="todo.completed">
 							<label v-on:dblclick="startEditing(todo)">{{ todo.title }}</label>
@@ -34,17 +34,17 @@
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
 					<li>
-						<a class="selected" href="#/">All</a>
+						<router-link class="selected" to="/">All</router-link>
 					</li>
 					<li>
-						<a href="#/active">Active</a>
+						<router-link to="/active">Active</router-link>
 					</li>
 					<li>
-						<a href="#/completed">Completed</a>
+						<router-link to="/completed">Completed</router-link>
 					</li>
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->
-				<button class="clear-completed" v-show="hasCompletedTodos" v-on:click="clearCompletedTodos">Clear completed</button>
+				<button class="clear-completed" v-show="completedTodos.length > 0" v-on:click="clearCompletedTodos">Clear completed</button>
 			</footer>
 		</section>
 		<footer class="info">
@@ -82,8 +82,18 @@ export default {
       //   _.every(this.todos, 'completed');
       return this.todos.find(todo => !todo.completed) == undefined;
     },
-    hasCompletedTodos: function() {
-      return this.todos.find(todo => todo.completed);
+    completedTodos: function() {
+      return this.todos.filter(todo => todo.completed);
+    },
+    visableTodos: function() {
+      switch (this.$route.params.status) {
+        case 'active':
+          return this.todos.filter(todo => !todo.completed);
+        case 'completed':
+          return this.todos.filter(todo => todo.completed);
+        default:
+          return this.todos;
+      }
     }
   },
   methods: {
@@ -138,8 +148,11 @@ export default {
     }
   },
   watch: {
-    todos: function() {
-      localStorage.setItem(LocalStorageKeyName, JSON.stringify(this.todos));
+    todos: {
+      deep: true,
+      handler: function() {
+        localStorage.setItem(LocalStorageKeyName, JSON.stringify(this.todos));
+      }
     }
   }
 };
