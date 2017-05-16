@@ -25,24 +25,11 @@
 				</ul>
 			</section>
 			<!-- This footer should hidden by default and shown when there are todos -->
-			<footer class="footer" v-if="hasTodos">
-				<!-- This should be `0 items left` by default -->
-				<span class="todo-count"><strong>{{ todos.length }}</strong> {{ 'item' | pluralise(todos.length) }} left</span>
-				<!-- Remove this if you don't implement routing -->
-				<ul class="filters">
-					<li>
-						<router-link v-bind:class="{selected: currentFilter == undefined}" to="/">All</router-link>
-					</li>
-					<li>
-						<router-link v-bind:class="{selected: currentFilter == 'active'}" to="/active">Active</router-link>
-					</li>
-					<li>
-						<router-link v-bind:class="{selected: currentFilter == 'completed'}" to="/completed">Completed</router-link>
-					</li>
-				</ul>
-				<!-- Hidden if no completed items are left ↓ -->
-				<button class="clear-completed" v-show="completedTodos.length > 0" v-on:click="clearCompletedTodos">Clear completed</button>
-			</footer>
+			<todo-footer :currentFilter="currentFilter"
+                         :todosLength="todos.length"
+                         :completedTodos="completedTodos"
+                         @clear-completed-todos="clearCompletedTodos">
+            </todo-footer>
 		</section>
 		<footer class="info">
 			<p>Double-click to edit a todo</p>
@@ -57,6 +44,7 @@
 
 <script>
 import TodoHeader from './todo-header.vue';
+import TodoFooter from './todo-footer.vue';
 
 const LocalStorageKeyName = 'todos-vuejs';
 export default {
@@ -126,11 +114,6 @@ export default {
       this.exitEditing();
     }
   },
-  filters: {
-    pluralise: function(value, count) {
-      return count === 1 ? value : `${value}s`;
-    }
-  },
   directives: {
     autofocus: function(el, binding) {
       binding.value && el.focus();
@@ -149,7 +132,8 @@ export default {
   },
   // https://vuejs.org/v2/guide/components.html#Component-Naming-Conventions
   components: {
-    TodoHeader
+    TodoHeader,
+    TodoFooter
   }
 };
 </script>
