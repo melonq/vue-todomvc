@@ -1,10 +1,7 @@
 <template>
   <div id="app">
       <section class="todoapp">
-			<header class="header">
-				<h1>todos</h1>
-				<input class="new-todo" placeholder="What needs to be done?" autofocus v-on:keyup.enter="addNewTodo">
-			</header>
+			<todo-header v-on:add-new-todo="newTodo => todos.push(newTodo)"></todo-header>
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section class="main" v-if="hasTodos">
 				<input class="toggle-all" type="checkbox" v-bind:checked="allCompleted">
@@ -59,6 +56,8 @@
 </template>
 
 <script>
+import TodoHeader from './todo-header.vue';
+
 const LocalStorageKeyName = 'todos-vuejs';
 export default {
   name: 'app',
@@ -97,16 +96,6 @@ export default {
     }
   },
   methods: {
-    addNewTodo: function(e) {
-      const newTodo = {
-        title: e.target.value.trim(),
-        completed: false
-      };
-      if (newTodo.title) {
-        this.todos.push(newTodo);
-        e.target.value = '';
-      }
-    },
     removeTodo: function(todo) {
       this.todos = this.todos.filter(t => t != todo);
     },
@@ -157,6 +146,10 @@ export default {
     $route: function() {
       this.currentFilter = this.$route.params.status;
     }
+  },
+  // https://vuejs.org/v2/guide/components.html#Component-Naming-Conventions
+  components: {
+    TodoHeader
   }
 };
 </script>
