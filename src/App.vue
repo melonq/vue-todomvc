@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import TodoHeader from './todo-header.vue';
-import TodoFooter from './todo-footer.vue';
+import TodoHeader from './components/todo-header.vue';
+import TodoFooter from './components/todo-footer.vue';
 
 const LocalStorageKeyName = 'todos-vuejs';
 export default {
