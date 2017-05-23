@@ -10,17 +10,12 @@
 					<!-- These are here just to show the structure of the list items -->
 					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
                     <li v-for="(todo, index) in visableTodos"  v-bind:class="{completed: todo.completed, editing: editingTodo == todo}">
-						<div class="view">
-							<input class="toggle" type="checkbox" v-model="todo.completed">
-							<label v-on:dblclick="startEditing(todo)">{{ todo.title }}</label>
-							<button class="destroy" v-on:click="removeTodo(todo)"></button>
-						</div>
-						<input class="edit" v-model.trim="todo.title"
-                            v-on:blur="submitEditing(todo)"
-                            v-on:keyup.enter="submitEditing(todo)"
-                            v-on:keyup.esc="cancelEditing(todo)"
-                            v-autofocus="todo === editingTodo"
-                        >
+                        <todo-item :todo="todo" :shouldAutoFocus="todo === editingTodo"
+                            @start-editing="startEditing"
+                            @remove-todo="removeTodo"
+                            @submit-editing="submitEditing"
+                            @cancel-editing="cancelEditing">
+                        </todo-item>
 					</li>
 				</ul>
 			</section>
@@ -45,6 +40,7 @@
 <script>
 import TodoHeader from './components/todo-header.vue';
 import TodoFooter from './components/todo-footer.vue';
+import TodoItem from './components/todo-item.vue';
 
 const LocalStorageKeyName = 'todos-vuejs';
 export default {
@@ -114,11 +110,6 @@ export default {
       this.exitEditing();
     }
   },
-  directives: {
-    autofocus: function(el, binding) {
-      binding.value && el.focus();
-    }
-  },
   watch: {
     todos: {
       deep: true,
@@ -133,7 +124,8 @@ export default {
   // https://vuejs.org/v2/guide/components.html#Component-Naming-Conventions
   components: {
     TodoHeader,
-    TodoFooter
+    TodoFooter,
+    TodoItem
   }
 };
 </script>
