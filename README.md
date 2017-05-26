@@ -1,6 +1,6 @@
-# vue-webpack-simple
+# vue-todoMVC
 
-> A Vue.js project
+> A Vue.js project, based on the requirement from [here](https://github.com/tastejs/todomvc/blob/master/app-spec.md#functionality)
 
 ## Build Setup
 
