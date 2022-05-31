@@ -12,4 +12,4 @@ jobs:
     environment: test
     steps:
       - name: deploy
-        run: echo "2"
+        run: echo "3"
