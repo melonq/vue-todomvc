@@ -9,7 +9,7 @@ on:
 jobs:
   deployment:
     runs-on: ubuntu-latest
+    environment: test
     steps:
       - name: deploy
-        environment: test
         run: echo "2"
