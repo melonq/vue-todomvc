@@ -25,4 +25,4 @@ jobs:
       - name: Check
         run: cat ./test-data.txt
       - name: deploy
-        run: echo "3"
+        run: echo "4"
