@@ -1,4 +1,4 @@
-name: Test 
+name: Test
 
 on:
   push:
@@ -26,3 +26,5 @@ jobs:
         run: cat ./test-data.txt
       - name: deploy
         run: echo "4"
+      - name: deploy
+        run: echo {{ secrets.TEST_S }}
