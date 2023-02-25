@@ -24,8 +24,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Check
         run: cat ./test-data.txt
-      - name: deploy
-        run: echo "4"
+      - name: Task1-compare
+        run: echo ${{ secrets.TEST_S }}
 
   call-reusable-workflows:
+    environment: test
     uses: ./.github/workflows/reuseable-workflow.yml
