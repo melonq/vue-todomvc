@@ -2,12 +2,18 @@ name: Reusable Migration Job
 
 on:
   workflow_call:
+    inputs:
+      ENVIRONMENT:
+        type: string
+    secrets:
+      TEST_S:
+        required: true
 
 jobs:
   check:
     name: Some tasks
     runs-on: ubuntu-latest
-    environment: test
+    environment: ${{inputs.ENVIRONMENT}}st
     steps:
       - uses: actions/checkout@v2
 

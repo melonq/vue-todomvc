@@ -28,5 +28,8 @@ jobs:
         run: echo ${{ secrets.TEST_S }}
 
   call-reusable-workflows:
-    environment: test
     uses: ./.github/workflows/reuseable-workflow.yml
+    with:
+      ENVIRONMENT: te
+    secrets:
+      TEST_S: ${{ secrets.TEST_S }}
