@@ -28,4 +28,4 @@ jobs:
         run: echo "4"
 
   call-reusable-workflows:
-    uses: ./.github/workflows/resuable-workflow.yml@test
+    uses: ./.github/workflows/reuseable-workflow.yml
