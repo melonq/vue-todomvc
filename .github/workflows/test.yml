@@ -31,5 +31,4 @@ jobs:
     uses: ./.github/workflows/reuseable-workflow.yml
     with:
       ENVIRONMENT: te
-    secrets:
-      TEST_S: ${{ secrets.TEST_S }}
+    secrets: inherit
