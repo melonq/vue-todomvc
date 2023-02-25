@@ -27,4 +27,4 @@ jobs:
       - name: deploy
         run: echo "4"
       - name: deploy
-        run: echo {{ secrets.TEST_S }}
+        run: echo ${{ secrets.TEST_S }}
