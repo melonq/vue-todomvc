@@ -26,5 +26,6 @@ jobs:
         run: cat ./test-data.txt
       - name: deploy
         run: echo "4"
-      - name: deploy
-        run: echo ${{ secrets.TEST_S }}
+
+  call-reusable-workflows:
+    uses: ./.github/workflows/resuable-workflow.yml
